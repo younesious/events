@@ -1,6 +1,8 @@
 package models
 
 import (
+	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/younesious/events/db"
@@ -60,4 +62,21 @@ func GetAllEvents() ([]Event, error) {
 	}
 
 	return events, nil
+}
+
+func GetEvent(id int64) (*Event, error) {
+	db := db.GetDB()
+
+	query := `SELECT * FROM events WHERE id = ?`
+
+	var event Event
+	err := db.QueryRow(query, id).Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("event not found!")
+		}
+		return nil, err
+	}
+
+	return &event, nil
 }
