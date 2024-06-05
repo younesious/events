@@ -93,7 +93,7 @@ func (e *Event) UpdateEvent() error {
 	}
 	defer stmt.Close()
 
-	_, err = db.Exec(query, e.Name, e.Description, e.Location, e.DateTime, e.UserID)
+	_, err = db.Exec(query, e.Name, e.Description, e.Location, e.DateTime, e.ID)
 	if err != nil {
 		return err
 	}
