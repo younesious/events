@@ -106,7 +106,7 @@ func DeleteEvent(id int64) error {
 
 	query := `DELETE FROM events WHERE id = ?`
 
-	_, err := db.Execec(query, id)
+	_, err := db.Exec(query, id)
 	if err != nil {
 		return err
 	}
