@@ -18,7 +18,7 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-var jwtKey = []byte("younesious_key")
+var JWTKey = []byte("younesious_key")
 
 type Claims struct {
 	UserID   int64  `json:"user_id"`
@@ -79,7 +79,7 @@ func GenerateJWT(userID int64, username string) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
+	tokenString, err := token.SignedString(JWTKey)
 	if err != nil {
 		return "", err
 	}
@@ -90,7 +90,7 @@ func GenerateJWT(userID int64, username string) (string, error) {
 func ValidateJWT(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+		return JWTKey, nil
 	})
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {

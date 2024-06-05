@@ -48,6 +48,7 @@ func getEvent(c *gin.Context) {
 
 func createEvent(c *gin.Context) {
 	var e models.Event
+	userID := c.GetInt64("userID")
 
 	err := c.ShouldBindJSON(&e)
 	if err != nil {
@@ -58,6 +59,7 @@ func createEvent(c *gin.Context) {
 		return
 	}
 
+	e.UserID = userID
 	err = e.CreateEvent()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -83,28 +85,47 @@ func updateEvent(c *gin.Context) {
 		return
 	}
 
+	userID := c.GetInt64("userID")
+
 	var e models.Event
 	err = c.ShouldBindJSON(&e)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Invalid request payload!",
+			"message": "Invalid request payload",
 			"error":   err.Error(),
 		})
 		return
 	}
 
+	existingEvent, err := models.GetEvent(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error fetching event",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	if existingEvent.UserID != userID {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "You are not authorized to update this event",
+		})
+		return
+	}
+
 	e.ID = id
+	e.UserID = userID
 	err = e.UpdateEvent()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error updating event!",
+			"message": "Error updating event",
 			"error":   err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Event update successfully :)",
+		"message": "Event updated successfully!",
 		"event":   e,
 	})
 }
@@ -119,16 +140,34 @@ func deleteEvent(c *gin.Context) {
 		return
 	}
 
-	err = models.DeleteEvent(id)
+	userID := c.GetInt64("userID")
+
+	existingEvent, err := models.GetEvent(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error deleting event, event not found!",
+			"message": "Error fetching event",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	if existingEvent.UserID != userID {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "You are not authorized to delete this event",
+		})
+		return
+	}
+
+	err = models.DeleteEvent(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error deleting event",
 			"error":   err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Event deleted successfully :|",
+		"message": "Event deleted successfully!",
 	})
 }
