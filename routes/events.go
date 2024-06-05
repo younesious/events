@@ -72,3 +72,63 @@ func createEvent(c *gin.Context) {
 		"event":   e,
 	})
 }
+
+func updateEvent(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid event ID",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	var e models.Event
+	err = c.ShouldBindJSON(&e)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid request payload!",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	e.ID = id
+	err = e.UpdateEvent()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error updating event!",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Event update successfully :)",
+		"event":   e,
+	})
+}
+
+func deleteEvent(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid event ID",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = models.DeleteEvent(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error deleting event, event not found!",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Event deleted successfully :|",
+	})
+}
