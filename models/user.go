@@ -26,6 +26,15 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+// @Summary      Create User
+// @Description  Creates a new user in the system
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        user  body User true "User Info"
+// @Success      201  {object}  User
+// @Failure      400  {object}  error
+// @Router       /users [post]
 func (u *User) CreateUser() error {
 	db := db.GetDB()
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
