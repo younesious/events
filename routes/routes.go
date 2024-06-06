@@ -2,20 +2,21 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/younesious/events/handlers"
 )
 
 func RegisterRoutes(r *gin.Engine) {
-	r.POST("/signup", signup)
-	r.POST("/login", login)
+	r.POST("/signup", handlers.Signup)
+	r.POST("/login", handlers.Login)
 
-	r.GET("/events", getAllEvents)
-	r.GET("/events/:id", getEvent)
+	r.GET("/events", handlers.GetAllEvents)
+	r.GET("/events/:id", handlers.GetEvent)
 
 	auth := r.Group("/")
 	auth.Use(AuthMiddleware())
-	auth.POST("/events", createEvent)
-	auth.PUT("/events/:id", updateEvent)
-	auth.DELETE("/events/:id", deleteEvent)
-	auth.POST("/events/:id/register", registerForEvent)
-	auth.DELETE("/events/:id/register", cancelRegistration)
+	auth.POST("/events", handlers.CreateEvent)
+	auth.PUT("/events/:id", handlers.UpdateEvent)
+	auth.DELETE("/events/:id", handlers.DeleteEvent)
+	auth.POST("/events/:id/register", handlers.RegisterForEvent)
+	auth.DELETE("/events/:id/register", handlers.CancelRegistration)
 }

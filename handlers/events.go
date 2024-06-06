@@ -8,7 +8,7 @@ import (
 	"github.com/younesious/events/models"
 )
 
-func getAllEvents(c *gin.Context) {
+func GetAllEvents(c *gin.Context) {
 	events, err := models.GetAllEvents()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -23,7 +23,7 @@ func getAllEvents(c *gin.Context) {
 	})
 }
 
-func getEvent(c *gin.Context) {
+func GetEvent(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -46,7 +46,7 @@ func getEvent(c *gin.Context) {
 	})
 }
 
-func createEvent(c *gin.Context) {
+func CreateEvent(c *gin.Context) {
 	var e models.Event
 	userID := c.GetInt64("userID")
 
@@ -75,7 +75,7 @@ func createEvent(c *gin.Context) {
 	})
 }
 
-func updateEvent(c *gin.Context) {
+func UpdateEvent(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -130,7 +130,7 @@ func updateEvent(c *gin.Context) {
 	})
 }
 
-func deleteEvent(c *gin.Context) {
+func DeleteEvent(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

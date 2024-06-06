@@ -8,7 +8,7 @@ import (
 	"github.com/younesious/events/models"
 )
 
-func registerForEvent(c *gin.Context) {
+func RegisterForEvent(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -34,7 +34,7 @@ func registerForEvent(c *gin.Context) {
 	})
 }
 
-func cancelRegistration(c *gin.Context) {
+func CancelRegistration(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

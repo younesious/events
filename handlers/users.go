@@ -7,7 +7,7 @@ import (
 	"github.com/younesious/events/models"
 )
 
-func signup(c *gin.Context) {
+func Signup(c *gin.Context) {
 	var u models.User
 	err := c.ShouldBindJSON(&u)
 	if err != nil {
@@ -33,7 +33,7 @@ func signup(c *gin.Context) {
 	})
 }
 
-func login(c *gin.Context) {
+func Login(c *gin.Context) {
 	var u models.User
 	err := c.ShouldBindJSON(&u)
 	if err != nil {
