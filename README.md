@@ -52,13 +52,13 @@ Clone the repository:
 Or if prefer Docker, follow these steps:
 1. Build the Docker image:
 ```sh
-docker build -t go-events-app .
+docker image build -t my-go-events-app:v1.00 .
 ```
 2. Run the Docker container:
 ```sh
-docker run -p 8080:8080 -v /path/to/local/db:/root/events.db go-events-app
+docker container run -p 8080:8080 -v /path/to/local/events.db:/app/events.db my-go-events-app:v1.00
 ```
-Replace `/path/to/local/db` with the actual path where you want to store the database on your host system.
+Replace `/path/to/local` with the actual path where you want to store the database on your host system(path to `events.db` file).
 
 #### HTTP API Endpoints
 
