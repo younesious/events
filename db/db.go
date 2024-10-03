@@ -47,7 +47,7 @@ func createEventTable() {
                 location TEXT NOT NULL,
                 date_time DATETIME NOT NULL,
                 user_id INTEGE,
-				FOREIGN KEY(user_id) REFERENCES users(id)
+		FOREIGN KEY(user_id) REFERENCES users(id)
         );`
 
 	_, err := db.Exec(createEventsTable)
@@ -59,7 +59,7 @@ func createEventTable() {
 func createUserTable() {
 	createUserQuery := `CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		username TEXT NT NULL, 
+		username TEXT NOT NULL, 
 		email TEXT NOT NULL UNIQUE,
 		password TEXT NOT NULL,
 		Created_at DATETIME
